@@ -85,14 +85,12 @@ def process_data(file_content):
 
     return person_data
 
+
 def setup_logging():
     """
     Sets up logging to write errors to a file called 'errors.log'.
     """
     # Get or create a logger with the name 'assignment2'
-    # Get the logger we'll set up in main()
-    # --*-- logger = logging.getLogger('assignment2') --*-- #
-
     logger = logging.getLogger('assignment2')
     logger.setLevel(logging.ERROR)
 
@@ -126,27 +124,27 @@ def display_person(id, person_data):
         print("No user found with that id")
 
 
-def main(url):
+def main():
     """
     Main function that coordinates the entire program.
-
-    Args:
-        url (str): The URL to download CSV data from
-
-    Learning Notes:
-    - This version receives the URL as a parameter instead of parsing args
-    - try/except blocks catch and handle errors gracefully
-    - while loops let us keep asking for input until user wants to quit
+    Uses argparse to get the URL parameter from command line arguments.
     """
-    print(f"Running main with URL = {url}...")
+    # Set up argparse to handle command line arguments
+    parser = argparse.ArgumentParser(description='Process CSV data from a URL')
+    parser.add_argument('--url', help='URL to the datafile', type=str, required=True)
+
+    # Parse the command line arguments
+    args = parser.parse_args()
+
+    print(f"Running main with URL = {args.url}...")
 
     # Set up logging first
     setup_logging()
 
     # Try to download the data
     try:
-        print("Downloading data from {}...".format(url))
-        csv_data = download_data(url)
+        print("Downloading data from {}...".format(args.url))
+        csv_data = download_data(args.url)
         print("Download successful!")
     except Exception as e:
         print("Error downloading data: {}".format(str(e)))
@@ -185,8 +183,5 @@ def main(url):
 
 
 if __name__ == "__main__":
-    """Main entry point"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--url", help="URL to the datafile", type=str, required=True)
-    args = parser.parse_args()
-    main(args.url)
+    """Main entry point - call main() with no parameters"""
+    main()
