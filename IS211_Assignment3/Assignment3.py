@@ -5,6 +5,7 @@ import argparse
 import io
 import re
 
+
 def download_data(url):
     """
     Downloads the data from the given URL.
